@@ -5,7 +5,7 @@ import { getCurrentMeeting } from "@/lib/meetings-db";
 
 async function RedirectToCurrentMeeting(): Promise<never> {
   await connection();
-  const meeting = getCurrentMeeting();
+  const meeting = await getCurrentMeeting();
 
   if (!meeting) {
     return redirect("/meetings");

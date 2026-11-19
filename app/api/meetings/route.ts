@@ -6,7 +6,9 @@ interface ApiError {
   error: string;
 }
 
-export function GET(request: Request): NextResponse<SacramentMeeting[] | ApiError> {
+export async function GET(
+  request: Request,
+): Promise<NextResponse<SacramentMeeting[] | ApiError>> {
   const date = new URL(request.url).searchParams.get("date");
 
   if (date !== null && !isValidIsoDate(date)) {
@@ -16,5 +18,5 @@ export function GET(request: Request): NextResponse<SacramentMeeting[] | ApiErro
     );
   }
 
-  return NextResponse.json(getMeetings(date ?? undefined));
+  return NextResponse.json(await getMeetings(date ?? undefined));
 }

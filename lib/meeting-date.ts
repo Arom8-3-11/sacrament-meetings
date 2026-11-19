@@ -10,7 +10,3 @@ export function getCurrentSundayDate(now = new Date()): string {
   sunday.setDate(sunday.getDate() - sunday.getDay());
   return formatIsoDate(sunday);
 }
-
-export function getMeetingIdForDate(date: string): number {
-  return Number(date.replace(/-/g, ""));
-}

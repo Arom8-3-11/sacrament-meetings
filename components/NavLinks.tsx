@@ -2,21 +2,24 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  getCurrentSundayDate,
-  getMeetingIdForDate,
-} from "@/lib/meeting-date";
 
 const links = [
   { href: "/meetings", label: "All programs" },
   { href: "/meetings/current", label: "This Sunday" },
 ];
 
-export default function NavLinks() {
+interface NavLinksProps {
+  /** Server-resolved id of this Sunday's meeting, so highlighting is timezone-safe. */
+  currentMeetingId: number | null;
+}
+
+export default function NavLinks({ currentMeetingId }: NavLinksProps) {
   const pathname = usePathname();
-  const currentMeetingPath = `/meetings/${getMeetingIdForDate(getCurrentSundayDate())}`;
+  const currentMeetingPath =
+    currentMeetingId === null ? null : `/meetings/${currentMeetingId}`;
   const isCurrentMeeting =
-    pathname === currentMeetingPath || pathname === "/meetings/current";
+    pathname === "/meetings/current" ||
+    (currentMeetingPath !== null && pathname === currentMeetingPath);
 
   return (
     <nav aria-label="Meeting programs" className="flex flex-wrap gap-2">
