@@ -1,8 +1,7 @@
 # Sacrament Meeting Planner
 
 A Next.js application for reviewing and printing Headwaters YSA Branch meeting
-programs. Meeting data is stored in a temporary in-memory module and includes
-the current Sunday plus four previous Sundays.
+programs. Meeting data is stored in a Neon PostgreSQL database.
 
 ## Run locally
 
@@ -10,6 +9,10 @@ the current Sunday plus four previous Sundays.
 npm install
 npm run dev
 ```
+
+Set `DATABASE_URL` in `.env.local` to a Neon PostgreSQL connection string.
+Apply `database/migrations/001-add-intermediate-hymn.sql` to an existing
+meetings database before using this version of the app.
 
 Open [http://localhost:3000](http://localhost:3000).
 
@@ -19,6 +22,10 @@ Open [http://localhost:3000](http://localhost:3000).
 - `/meetings` — current and past meeting programs
 - `/meetings/current` — redirects to this Sunday's program
 - `/meetings/[id]` — meeting agenda with a print action
+- `/meetings/new` — create a meeting
+- `/meetings/[id]/edit` — edit a meeting
+
+The leader tools and mutation actions are not yet protected by authentication.
 
 ## API
 
@@ -29,6 +36,10 @@ Open [http://localhost:3000](http://localhost:3000).
 The collection endpoint returns `400` for an invalid date. The item endpoint
 returns `400` for a non-numeric ID and `404` when a numeric ID is not found.
 
+Regular, stake, and general programs include an intermediate hymn between
+speakers. Existing programs without an assigned intermediate hymn show
+"Not yet assigned"; edit the program to select one.
+
 ## Checks
 
 ```bash
@@ -38,10 +49,5 @@ npm run build
 
 The branch presidency is listed in `lib/branch.ts`. The meeting records are
 sample data: their announcements, assignments, and other details are not
-confirmed. The list includes the current Sunday and four previous Sundays.
-Each ID is derived from its meeting date, and its sample agenda is selected
-deterministically, so a program's URL and details do not change as weeks pass.
-The records are still generated in memory and are not persistent; programs
-older than the five-week window are not retained. The `wardBusiness` data field
-is displayed as "Branch business" in the program. Database storage and meeting
-mutations are outside this week's assignment scope.
+confirmed. The `wardBusiness` data field is displayed as "Branch business"
+in the program.

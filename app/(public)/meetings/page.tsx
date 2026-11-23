@@ -38,12 +38,20 @@ export default async function MeetingsPage({ searchParams }: MeetingsPageProps) 
             These programs contain sample meeting details and assignments.
           </p>
         </div>
-        <Link
-          className="rounded-full border border-[var(--color-line)] bg-white px-4 py-2.5 text-sm font-semibold text-[var(--color-primary)] hover:border-[var(--color-primary-soft)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-primary)]"
-          href="/meetings/current"
-        >
-          Go to this Sunday
-        </Link>
+        <div className="flex flex-wrap gap-3">
+          <Link
+            className="rounded-full border border-[var(--color-line)] bg-white px-4 py-2.5 text-sm font-semibold text-[var(--color-primary)] hover:border-[var(--color-primary-soft)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-primary)]"
+            href="/meetings/current"
+          >
+            Go to this Sunday
+          </Link>
+          <Link
+            className="rounded-full bg-[var(--color-primary)] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[var(--color-primary-hover)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-primary)]"
+            href="/meetings/new"
+          >
+            Plan a meeting
+          </Link>
+        </div>
       </div>
 
       <div className="mb-8">

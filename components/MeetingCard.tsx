@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { deleteMeeting } from "@/lib/actions";
 import type { SacramentMeeting } from "@/lib/types";
 
 interface MeetingCardProps {
@@ -39,15 +40,33 @@ export default function MeetingCard({ meeting }: MeetingCardProps) {
       <p className="mt-4 text-sm text-[var(--color-muted)]">
         Presiding: <span className="font-medium text-[var(--color-ink)]">{meeting.presiding}</span>
       </p>
-      <Link
-        className="mt-6 inline-flex items-center gap-2 rounded font-semibold text-[var(--color-primary)] underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-primary)]"
-        href={`/meetings/${meeting.id}`}
-      >
-        View program
-        <span aria-hidden="true" className="transition group-hover:translate-x-1">
-          →
-        </span>
-      </Link>
+      <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2">
+        <Link
+          className="inline-flex items-center gap-2 rounded font-semibold text-[var(--color-primary)] underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-primary)]"
+          href={`/meetings/${meeting.id}`}
+        >
+          View program
+          <span aria-hidden="true" className="transition group-hover:translate-x-1">
+            →
+          </span>
+        </Link>
+        <Link
+          className="rounded font-semibold text-[var(--color-primary)] underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-primary)]"
+          href={`/meetings/${meeting.id}/edit`}
+        >
+          Edit
+        </Link>
+        <form action={deleteMeeting}>
+          <input type="hidden" name="id" value={meeting.id} />
+          <button
+            type="submit"
+            aria-label={`Delete ${meeting.date} meeting`}
+            className="rounded font-semibold text-red-700 underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-red-700"
+          >
+            Delete
+          </button>
+        </form>
+      </div>
     </article>
   );
 }
