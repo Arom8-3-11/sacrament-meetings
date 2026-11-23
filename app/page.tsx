@@ -1,69 +1,92 @@
 import Image from "next/image";
+import Link from "next/link";
+import BranchPresidency from "@/components/BranchPresidency";
+import { branchName } from "@/lib/branch";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main className="mx-auto w-full max-w-6xl px-5 py-12 sm:px-8 sm:py-16">
+      <section className="grid items-center gap-10 overflow-hidden rounded-[2rem] bg-[var(--color-primary)] px-7 py-9 text-white sm:px-12 sm:py-14 lg:grid-cols-[1.05fr_0.95fr]">
+        <div className="relative z-10">
+          <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-[var(--color-primary-soft)]">
+            {branchName}
           </p>
+          <h1 className="max-w-xl text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
+            Make room for what matters.
+          </h1>
+          <p className="mt-5 max-w-lg text-base leading-7 text-white/90">
+            Find this week&apos;s sacrament meeting program, review past
+            gatherings, and come prepared to worship together.
+          </p>
+          <p className="mt-4 max-w-lg text-sm leading-6 text-white/90">
+            Programs currently contain sample meeting details and assignments.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link
+              className="rounded-full bg-white px-5 py-3 text-sm font-semibold text-[var(--color-primary)] transition hover:bg-[var(--color-surface-soft)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+              href="/meetings/current"
+            >
+              View this Sunday&apos;s program
+            </Link>
+            <Link
+              className="rounded-full border border-white/35 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+              href="/meetings"
+            >
+              Browse all programs
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div className="mx-auto w-full max-w-md">
+          <Image
+            alt="Illustration of a sample Sunday meeting program"
+            className="h-auto w-full"
+            height={400}
+            priority
+            src="/meeting-program.svg"
+            width={480}
+          />
         </div>
-      </main>
-    </div>
+      </section>
+
+      <BranchPresidency className="mt-8 rounded-2xl border border-[var(--color-line)] bg-white p-6 sm:p-8" />
+
+      <section className="grid gap-5 py-12 sm:grid-cols-3">
+        {[
+          {
+            number: "01",
+            title: "Plan together",
+            description:
+              "Review assignments and meeting details in one clear agenda.",
+          },
+          {
+            number: "02",
+            title: "Stay informed",
+            description:
+              "Keep announcements and branch business easy to find.",
+          },
+          {
+            number: "03",
+            title: "Look back",
+            description:
+              "Open and print programs from recent Sunday meetings.",
+          },
+        ].map((item) => (
+          <article
+            className="rounded-2xl border border-[var(--color-line)] bg-white p-6"
+            key={item.number}
+          >
+            <p className="text-sm font-bold tracking-widest text-[var(--color-primary)]">
+              {item.number}
+            </p>
+            <h2 className="mt-4 text-lg font-semibold text-[var(--color-ink)]">
+              {item.title}
+            </h2>
+            <p className="mt-2 text-sm leading-6 text-[var(--color-muted)]">
+              {item.description}
+            </p>
+          </article>
+        ))}
+      </section>
+    </main>
   );
 }

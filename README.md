@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sacrament Meeting Planner
 
-## Getting Started
+A Next.js application for reviewing and printing Headwaters YSA Branch meeting
+programs. Meeting data is stored in a temporary in-memory module and includes
+the current Sunday plus four previous Sundays.
 
-First, run the development server:
+## Run locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Routes
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `/` — planner landing page
+- `/meetings` — current and past meeting programs
+- `/meetings/current` — redirects to this Sunday's program
+- `/meetings/[id]` — meeting agenda with a print action
 
-## Learn More
+## API
 
-To learn more about Next.js, take a look at the following resources:
+- `GET /api/meetings` — list meetings
+- `GET /api/meetings?date=YYYY-MM-DD` — filter meetings by date
+- `GET /api/meetings/[id]` — read a meeting by numeric ID
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The collection endpoint returns `400` for an invalid date. The item endpoint
+returns `400` for a non-numeric ID and `404` when a numeric ID is not found.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Checks
 
-## Deploy on Vercel
+```bash
+npm run lint
+npm run build
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The branch presidency is listed in `lib/branch.ts`. The meeting records are
+sample data: their announcements, assignments, and other details are not
+confirmed. The list includes the current Sunday and four previous Sundays.
+Each ID is derived from its meeting date, and its sample agenda is selected
+deterministically, so a program's URL and details do not change as weeks pass.
+The records are still generated in memory and are not persistent; programs
+older than the five-week window are not retained. The `wardBusiness` data field
+is displayed as "Branch business" in the program. Database storage and meeting
+mutations are outside this week's assignment scope.
