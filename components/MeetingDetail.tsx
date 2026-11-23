@@ -1,5 +1,7 @@
 import BranchPresidency from "@/components/BranchPresidency";
+import PrintButton from "@/components/PrintButton";
 import { branchName } from "@/lib/branch";
+import { hasIntermediateHymn } from "@/lib/meeting-type";
 import type { SacramentMeeting } from "@/lib/types";
 
 interface MeetingDetailProps {
@@ -22,10 +24,23 @@ function HymnLine({ number, title }: SacramentMeeting["openingHymn"]) {
   );
 }
 
+function IntermediateHymn({ hymn }: { hymn: SacramentMeeting["intermediateHymn"] }) {
+  return (
+    <div className="mt-4">
+      <h3 className="text-sm font-bold uppercase tracking-wider text-[var(--color-primary)]">
+        Intermediate hymn
+      </h3>
+      {hymn ? (
+        <HymnLine {...hymn} />
+      ) : (
+        <p className="mt-1 text-[var(--color-muted)]">Not yet assigned.</p>
+      )}
+    </div>
+  );
+}
+
 export default function MeetingDetail({ meeting }: MeetingDetailProps) {
   const meetingDate = new Date(`${meeting.date}T12:00:00`);
-  const isSacramentMeeting =
-    meeting.meetingType === "regular" || meeting.meetingType === "testimony";
   const musicalNumbers = meeting.speakers.filter(
     (item) => item.type === "musical-number",
   );
@@ -63,13 +78,7 @@ export default function MeetingDetail({ meeting }: MeetingDetailProps) {
             <dd className="text-[var(--color-muted)]">{meeting.conducting}</dd>
           </div>
         </dl>
-        <button
-          className="print-hidden mt-6 rounded-full bg-[var(--color-primary)] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[var(--color-primary-hover)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-primary)]"
-          onClick={() => window.print()}
-          type="button"
-        >
-          Print this program
-        </button>
+        <PrintButton />
       </header>
 
       <div className="grid gap-x-10 sm:grid-cols-2">
@@ -128,14 +137,12 @@ export default function MeetingDetail({ meeting }: MeetingDetailProps) {
           </p>
         </section>
 
-        {isSacramentMeeting && (
-          <section className="border-b border-[var(--color-line)] py-6 sm:col-span-2">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-[var(--color-primary)]">
-              Sacrament hymn
-            </h2>
-            <HymnLine {...meeting.sacramentHymn} />
-          </section>
-        )}
+        <section className="border-b border-[var(--color-line)] py-6 sm:col-span-2">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-[var(--color-primary)]">
+            Sacrament hymn
+          </h2>
+          <HymnLine {...meeting.sacramentHymn} />
+        </section>
 
         {musicalNumbers.length > 0 && (
           <section className="border-b border-[var(--color-line)] py-6">
@@ -159,10 +166,13 @@ export default function MeetingDetail({ meeting }: MeetingDetailProps) {
           </h2>
           {speakers.length ? (
             <ul className="mt-2 space-y-3">
-              {speakers.map(({ name, topic }) => (
+              {speakers.map(({ name, topic }, index) => (
                 <li key={`${name}-${topic}`}>
                   <p className="font-semibold text-[var(--color-ink)]">{name}</p>
                   <p className="text-sm text-[var(--color-muted)]">{topic}</p>
+                  {index === 0 && hasIntermediateHymn(meeting.meetingType) && (
+                    <IntermediateHymn hymn={meeting.intermediateHymn} />
+                  )}
                 </li>
               ))}
             </ul>
@@ -170,6 +180,9 @@ export default function MeetingDetail({ meeting }: MeetingDetailProps) {
             <p className="mt-2 text-sm text-[var(--color-muted)]">
               Open-microphone testimony meeting.
             </p>
+          )}
+          {speakers.length === 0 && hasIntermediateHymn(meeting.meetingType) && (
+            <IntermediateHymn hymn={meeting.intermediateHymn} />
           )}
         </section>
 
